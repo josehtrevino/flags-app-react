@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import Country from './Country';
+import { useSelector, useDispatch } from 'react-redux';
 
 const CountryListStyled = styled.div`
   display: grid;
@@ -11,29 +12,48 @@ const CountryListStyled = styled.div`
 `;
 
 function CountryList() {
+  const dispatch = useDispatch();
+
+  const countryListByName = useSelector((state) => state.countryListByName);
+
+  const countryList = useSelector((state) => {
+    if (state.filterByRegion !== '' && countryListByName.length === 0) {
+      return state.coutryFilteredByRegion;
+    }
+    if (countryListByName.length > 0) {
+      return countryListByName;
+    }
+    return state.countryList;
+  });
+  useEffect(() => {
+    fetch('https://restcountries.eu/rest/v2/all')
+      .then((response) => {
+        return response.json();
+      })
+      .then((list) => {
+        dispatch({
+          type: 'SET_COUNTRY_LIST',
+          payload: list,
+        });
+      })
+      .catch(() => {
+        console.log('hubo un error :(');
+      });
+  }, [dispatch]);
   return (
     <CountryListStyled>
-      <Country
-        flag="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Flag_of_Mexico.svg/1024px-Flag_of_Mexico.svg.png"
-        name="Mexico"
-        population={126000000}
-        region="America"
-        capital="Mexico City"
-      />
-      <Country
-        flag="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Flag_of_Mexico.svg/1024px-Flag_of_Mexico.svg.png"
-        name="Mexico"
-        population={126000000}
-        region="America"
-        capital="Mexico City"
-      />
-      <Country
-        flag="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Flag_of_Mexico.svg/1024px-Flag_of_Mexico.svg.png"
-        name="Mexico"
-        population={126000000}
-        region="America"
-        capital="Mexico City"
-      />
+      {countryList.map(({ name, flag, population, capital, region }) => {
+        return (
+          <Country
+            flag={flag}
+            name={name}
+            key={name}
+            population={population}
+            region={region}
+            capital={capital}
+          />
+        );
+      })}
     </CountryListStyled>
   );
 }

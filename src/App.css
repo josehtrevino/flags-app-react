@@ -9,6 +9,7 @@ html {
 }
 
 body {
+  background-color: var(--background);
   font-family: 'Nunito Sans', sans-serif;
   color: var(--black);
 }
