@@ -5,11 +5,13 @@ import reducer from './reducer';
 import CountryList from './components/Country-list';
 import ActionList from './components/Action-list';
 import Header from './components/Header';
+import CountryPage from './pages/CountryPage';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 const initialState = {
   countryList: [],
   countryListByName: [],
-  coutryFilteredByRegion: [],
+  countryFilteredByRegion: [],
   filterByRegion: '',
 };
 
@@ -18,9 +20,16 @@ const store = createStore(reducer, initialState);
 function App() {
   return (
     <Provider store={store}>
-      <Header />
-      <ActionList />
-      <CountryList />
+      <Router>
+        <Header />
+        <Switch>
+          <Route path="/country/:id" component={CountryPage} />
+          <Route path="/">
+            <ActionList />
+            <CountryList />
+          </Route>
+        </Switch>
+      </Router>
     </Provider>
   );
 }

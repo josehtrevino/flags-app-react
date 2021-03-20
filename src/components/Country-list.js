@@ -2,13 +2,17 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import Country from './Country';
 import { useSelector, useDispatch } from 'react-redux';
+import Wrapper from './Wrapper';
 
 const CountryListStyled = styled.div`
   display: grid;
   grid-row-gap: 2.3em;
+  grid-auto-flow: columns;
+  grid-column-gap: 40px;
+  grid-template-columns: repeat(auto-fill, 270px);
   background-color: var(--background);
   justify-content: center;
-  padding: 4em 2em;
+  padding: 3em 0;
 `;
 
 function CountryList() {
@@ -18,7 +22,7 @@ function CountryList() {
 
   const countryList = useSelector((state) => {
     if (state.filterByRegion !== '' && countryListByName.length === 0) {
-      return state.coutryFilteredByRegion;
+      return state.countryFilteredByRegion;
     }
     if (countryListByName.length > 0) {
       return countryListByName;
@@ -41,20 +45,36 @@ function CountryList() {
       });
   }, [dispatch]);
   return (
-    <CountryListStyled>
-      {countryList.map(({ name, flag, population, capital, region }) => {
-        return (
-          <Country
-            flag={flag}
-            name={name}
-            key={name}
-            population={population}
-            region={region}
-            capital={capital}
-          />
-        );
-      })}
-    </CountryListStyled>
+    <Wrapper>
+      <CountryListStyled>
+        {countryList.map(
+          ({
+            name,
+            flag,
+            population,
+            capital,
+            region,
+            nativeName,
+            cioc,
+            alpha2Code,
+          }) => {
+            return (
+              <Country
+                flag={flag}
+                name={name}
+                key={name}
+                population={population}
+                region={region}
+                capital={capital}
+                nativeName={nativeName}
+                cioc={cioc}
+                alpha2Code={alpha2Code}
+              />
+            );
+          }
+        )}
+      </CountryListStyled>
+    </Wrapper>
   );
 }
 

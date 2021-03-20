@@ -1,13 +1,14 @@
 export default function reducer(state, action) {
   switch (action.type) {
+    // Lista completa de países
     case 'SET_COUNTRY_LIST': {
       return { ...state, countryList: action.payload };
     }
-
+    // Retorna el país que coincida con el string ingresado
     case 'SET_COUNTRY_BY_NAME': {
       let list;
       if (state.filterByRegion !== '') {
-        list = state.coutryFilteredByRegion;
+        list = state.countryFilteredByRegion;
       } else {
         list = state.countryList;
       }
@@ -16,21 +17,21 @@ export default function reducer(state, action) {
       );
       return { ...state, countryListByName };
     }
-
+    // Filtra los países por región
     case 'FILTER_BY_REGION': {
       const { regionSelected } = action.payload;
 
       if ('' === regionSelected) {
-        return { ...state, coutryFilteredByRegion: [], filterByRegion: '' };
+        return { ...state, countryFilteredByRegion: [], filterByRegion: '' };
       }
 
-      const coutryFilteredByRegion = state.countryList.filter(
+      const countryFilteredByRegion = state.countryList.filter(
         (country) => country.region === regionSelected
       );
 
       return {
         ...state,
-        coutryFilteredByRegion,
+        countryFilteredByRegion,
         filterByRegion: regionSelected,
       };
     }
