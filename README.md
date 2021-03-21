@@ -1,4 +1,8 @@
-# Getting Started with Create React App
+# Flags App
+
+![Screenshot](./public/screenshot.png)
+
+FrontendMentor.io challenge, developed using React Hooks, React Redux, React Router and Styled Components.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
